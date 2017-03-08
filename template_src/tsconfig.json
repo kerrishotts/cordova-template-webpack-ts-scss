@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "allowJs": true,
+        "target": "es5",
+        "module": "es2015",
+        "inlineSourceMap": true,
+        "jsx": "react"
+    },
+    "include": [
+        "www.src/ts/**/*",
+        "www.src/es/**/*",
+        "www/ts/**/*",
+        "www/es/**/*"
+    ]
+}
