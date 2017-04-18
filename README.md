@@ -1,8 +1,6 @@
-# cordova-template-webpack-ts-scss
+# cordova-template-webpack-ts-scss 03.0
 
 This template is designed to make it easy for you to write ES2015+, TypeScript, and SCSS code, and then bundle that code using webpack v2. It will do this automatically each time you run any Cordova/PhoneGap command that triggers the `prepare` phase.
-
-This template is based on the [cordova-plugin-webpack-transpiler](https://github.com/kerrishotts/cordova-plugin-webpack-transpiler) plugin which is very similar and slightly more flexible. However, if you don't want to rely on a plugin, this template will work as well.
 
 ## Requirements
 
@@ -53,8 +51,6 @@ www.src/
     vendor/                             # Vendor files
 
 ```
-
-> **Note**: You can change to a "sibling" structure if you desire by removing the `www.src` directory and moving `es`, `ts`, and `scss` to the `www` directory.
 
 ### Transformations
 
@@ -113,9 +109,7 @@ If you need to change this behavior, you can override it by copying `webpack.con
 
 ### Modifying the configuration files
 
-If you wish to modify `webpack.common.js`, `webpack.config.js`, `webpack.release.config.js`, or `tsconfig.json`, you can. The plugin will not attempt to override their contents, and it won't attempt to overwrite the files on a reinstall. If you need to reset these configuration files, delete them and reinstall the plugin.
-
-> **Note**: You should prefer to override settings used by `webpack.common.js` in `webpack.config.js`.
+If you wish to modify `webpack.config.js`, `webpack.release.config.js`, or `tsconfig.json`, you can. The plugin will not attempt to override their contents, and it won't attempt to overwrite the files on a reinstall. If you need to reset these configuration files, delete them and reinstall the plugin.
 
 # Built-in Webpack Loaders
 
@@ -169,110 +163,11 @@ Alias            | Path
 `Lib`            | `(www|src.www)/lib`
 `$VENDOR`        | `(www|src.www)/vendor`
 `Vendor`         | `(www|src.www)/vendor`
-`Components`     | `(www|src.www)/(es|ts)/components`
-`Controllers`    | `(www|src.www)/(es|ts)/controllers`
-`Models`         | `(www|src.www)/(es|ts)/models`
-`Pages`          | `(www|src.www)/(es|ts)/pages`
-`Routes`         | `(www|src.www)/(es|ts)/routes`
-`Templates`      | `(www|src.www)/(es|ts)/templates`
-`Utilities`      | `(www|src.www)/(es|ts)/utilities`
-`Views`          | `(www|src.www)/(es|ts)/views`
-
-# Overriding the configuration
-
-Preferably you should make changes to `webpack.config.js` instead of changing `webpack.common.js`. The main reason is that doing so allows you to remove `webpack.common.js` should a new version of the plugin require a fresh version. Plus, unless you're completely changing how the bundling works, you'll end up with a more maintainable configuration.
-
-## webpack.common.js exports
-
-The following are exported by `webpack.common.js`:
-
-* `config(options)`: returns a webpack configuration based on `options`, as follows:
-    * `src` (optional): Source directory; defaults to `$PROJECT_ROOT/www.src` if present, or `$PROJECT_ROOT/www` otherwise.
-    * `dirs` (required): directory mappings. A default mapping is exported as `defaults.dirs` and looks like follows:
-        ```js
-        {
-            css:      "css",
-            es:       "es",
-            external: "www.src",
-            html:     "html",
-            img:      "img",
-            js:       "js",
-            lib:      "lib",
-            scss:     "scss",
-            ts:       "ts",
-            vendor:   "vendor",
-            www:      "www",
-            aliases: {
-                Components:  "components",
-                Controllers: "controllers",
-                Models:      "models",
-                Pages:       "pages",
-                Routes:      "routes",
-                Templates:   "templates",
-                Utilities:   "util",
-                Views:       "views",
-            }
-        }
-        ```
-
-        * The `alias` key is used to add additional module resolution aliases. In addition, `$LIB`, `Lib`, `$VENDOR` and `Vendor` point to `dirs.lib` and `dirs.vendor`.
-    * `sourcePaths` (optional): Provides the names of the source paths that can be transformed. Any missing paths are copied from the default, as follows:
-        ```js
-        {
-            src: options.src,
-            es: dirs.es,
-            ts: dirs.ts
-            scss: dirs.scss
-        }
-        ```
-    * `outputPaths` (optional): Provides the names of the output paths. Any missing paths are copied from the default, as follows:
-        ```js
-        {
-            www: dirs.www,
-            js: dirs.js,
-            css: dirs.css
-        }
-        ```
-    * `indexes` (optional): Provides source/destination mapping for varies entry and index files. Extended from the following form (`from` is relative to `sourcePaths.src`, and `to` is relative to `outputPaths.www`):
-        ```js
-        {
-            scss: {from:, to:},
-            es: {from:, to:},
-            ts: {from:, to:},
-            vendor: {to:}
-        }
-        ```
-    * `outputFile` (optional): Specifies the output filename for the JavaScript bundle. Defaults to `indexes.es.to + "bundle.js"` (or `bundle.ts` if using TypeScript).
-    * `vendor` (required): Modules to output as part of the `vendor` chunk. If none, pass `[]`.
-    * `entryFiles` (optional): Specifies the entry files for the app. If not provided, defaults to (substituting `ts` if using TypeScript):
-        ```js
-        {
-            app: ["./" + indexes.es.from, "./" + indexes.scss.from],
-            vendor: vendor  // if vendor has length > 0
-        }
-        ```
-    * `allowTypeScript` (optional): Indicates if typescript is permitted. This enables extra extensions and configuration for the TypeScript compiler. Defaults to `false`.
-    * `allowScss` (optional): Indicates if Scss is permitted. Defaults to `false`.
-    * `transpiler` (optional): Indicates the webpack loader to use for JavaScript files. If `allowTypeScript` is `true`, defaults to `ts-loader`.
-    * `assetsToCopyIfExternal` (required): Indicates the assets to copy from `dirs.external` to `dirs.www`. A default list is exported under `defaults.assetsToCopyIfExternal`, and looks like follows:
-        ```js
-        [
-            { from: "*.html" },
-            { from: dirs.img + "/**/*" },
-            { from: dirs.css + "/**/*" },
-            { from: dirs.js + "/**/*" },
-            { from: dirs.vendor + "/**/*" },
-            { from: dirs.lib + "/**/*" },
-            { from: dirs.html + "/**/*" },
-        ]
-        ```
-    * `assetsToCopyIfSibling` (required): Same as `assetsToCopyIfExternal`, but applies if the source directory is the `dirs.www` folder instead of `dirs.external`. The exported default (`defaults.assetsToCopyIfSibling`) is `[]`.
-* `defaults`: useful defaults, as follows
-    * `dirs`: exports default directory mappings
-    * `vendor`: exports default vendor modules
-    * `assetsToCopyIfExternal`, `assetsToCopyIfSibling`: exports default assets to copy
-    * `transpiler`: exports default transpiler
 
 # License
 
 Apache 2.0.
+
+# Changes
+
+* 0.3.0 completely eliminates the similarity to `cordova-plugin-webpack-transpiler`; the template doesn't need to be nearly as flexible as the plugin, and so this reduces a lot of moving parts. Everything is still configurable, but no `webpack.common.js` is needed anymore, and the `afterPrepare` script has been removed.
