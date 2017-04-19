@@ -1,4 +1,4 @@
-# cordova-template-webpack-ts-scss 0.3.1
+# cordova-template-webpack-ts-scss 0.3.2
 
 This template is designed to make it easy for you to write ES2015+, TypeScript, and SCSS code, and then bundle that code using webpack v2. It will do this automatically each time you run any Cordova/PhoneGap command that triggers the `prepare` phase.
 
@@ -56,13 +56,7 @@ www.src/
 
 The following transformations occur just prior to the `prepare` phase.
 
-Sibling     |      Entry Point           | Output
------------:|:---------------------------|:------------------
-TypeScript  | `www/ts/index.ts`          | `www/js/bundle.js`
-ES2015      | `www/es/index.js`          | `www/js/bundle.js`
-SCSS        | `www/scss/styles.scss`     | `www/css/bundle.css`
-
-External    |      Entry Point           | Output
+Type        |      Entry Point           | Output
 -----------:|:---------------------------|:------------------
 TypeScript  | `www.src/ts/index.ts`      | `www/js/bundle.js`
 ES2015      | `www.src/es/index.js`      | `www/js/bundle.js`
@@ -94,10 +88,6 @@ css/bundle.css  14.8 kB       0  [emitted]  main
 
 The output indicates that four assets were generated. (The paths are relative to your `www` folder.) The `bundle.*` files are transformed from your ES2015+/TypeScript or SCSS files. The other files are files that were copied (this example was from an project using the external structure).
 
-> **Note**: If you are using the sibling project structure, an `after prepare` step will execute. This step removes duplicate files in the resulting platform build artifacts so that your original source files aren't needlessly copied to your app bundles.
-
-> **Note**: If you've copied in your own `index.html` file, you'll need to update your `index.html` file to reference `js/bundle.js` and `css/bundle.css` instead of your original entry files.
-
 ### Debug vs Release
 
 The plugin watches for a `--release` switch on the command line; if it is detected the following occurs:
@@ -120,6 +110,8 @@ file pattern        | loader       | example
 *.json; *.json5     | json5-loader | `import pkg from "../../package.json";`
 *.html; *.txt       | raw-loader   | `import template from "../templates/list-item.html";`
 *.png; *.jpg; *.svg | file-loader  | `import icon from "../img/icon.svg";`
+*.eot; *.ttf; *.woff; *.woff2 | file-loader  | `import icon from "../img/icon.svg";`
+&mdash;                       | imports-loader |  None; you must specify the rules yourself
 
 If a file pattern you need to import isn't matched with a loader, you can specify the loader directly:
 
@@ -129,7 +121,7 @@ import xml from "raw-loader!../../config.xml";
 
 # Built-in asset copying
 
-When in the "external" operating mode, the following assets will be copied from `www.src` to `www`:
+The following assets will be copied from `www.src` to `www`:
 
 ```
 *.html
@@ -146,10 +138,10 @@ html/**/*
 The default configurations add the following module resolution paths (relative to project root):
 
 ```
-(www|src.www)/(es|ts)/lib
-(www|src.www)/(es|ts)/vendor
-(www|src.www)/lib
-(www|src.www)/vendor
+www.src/(es|ts)/lib
+www.src/(es|ts)/vendor
+www.src/lib
+www.src/vendor
 node_modules
 ```
 
@@ -159,17 +151,11 @@ The default configurations add the following aliases, which may be useful in res
 
 Alias            | Path
 ----------------:|:--------------------------------------
-`$LIB`           | `(www|src.www)/lib`
-`Lib`            | `(www|src.www)/lib`
-`$VENDOR`        | `(www|src.www)/vendor`
-`Vendor`         | `(www|src.www)/vendor`
+`$LIB`           | `www.src/lib`
+`Lib`            | `www.src/lib`
+`$VENDOR`        | `www.src/vendor`
+`Vendor`         | `www.src/vendor`
 
 # License
 
 Apache 2.0.
-
-# Changes
-
-* 0.3.1 Fix TypeScript sourcemaps
-
-* 0.3.0 completely eliminates the similarity to `cordova-plugin-webpack-transpiler`; the template doesn't need to be nearly as flexible as the plugin, and so this reduces a lot of moving parts. Everything is still configurable, but no `webpack.common.js` is needed anymore, and the `afterPrepare` script has been removed.

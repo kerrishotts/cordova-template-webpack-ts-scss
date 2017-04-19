@@ -99,6 +99,7 @@ var webpackConfig = {
                 exclude: /node_modules\/.*\.css$/,
                 use: extractStylesPlugin.extract({
                     fallback: "style-loader",
+                    publicPath: "../",
                     use: [
                         { loader: "css-loader?sourceMap=true" },
                         { loader: "resolve-url-loader?sourceMap=true" },
@@ -112,6 +113,7 @@ var webpackConfig = {
                 test: /node_modules\/.*\.css$/,
                 use: extractStylesVendorPlugin.extract({
                     fallback: "style-loader",
+                    publicPath: "../",
                     use: [
                         { loader: "css-loader?sourceMap=true" },
                         { loader: "resolve-url-loader?sourceMap=true" },
