@@ -1,4 +1,4 @@
-# cordova-template-webpack-ts-scss 03.0
+# cordova-template-webpack-ts-scss 0.3.1
 
 This template is designed to make it easy for you to write ES2015+, TypeScript, and SCSS code, and then bundle that code using webpack v2. It will do this automatically each time you run any Cordova/PhoneGap command that triggers the `prepare` phase.
 
@@ -169,5 +169,7 @@ Alias            | Path
 Apache 2.0.
 
 # Changes
+
+* 0.3.1 Fix TypeScript sourcemaps
 
 * 0.3.0 completely eliminates the similarity to `cordova-plugin-webpack-transpiler`; the template doesn't need to be nearly as flexible as the plugin, and so this reduces a lot of moving parts. Everything is still configurable, but no `webpack.common.js` is needed anymore, and the `afterPrepare` script has been removed.
